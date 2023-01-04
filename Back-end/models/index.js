@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise
 const db = {}
 db.mongoose = mongoose
 
-db.users = require('./users')
+db.user = require('./users')
 db.role = require('./role')
 db.organisme = require('./organisme')
 db.formation = require('./formation')
@@ -28,3 +28,5 @@ db.role.estimatedDocumentCount((err, count) => {
         })
     }
 })
+
+module.exports = db

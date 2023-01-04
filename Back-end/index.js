@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const authRoute = require('./Routers/authRoute')
+const userRoute = require('./Routers/userRoutes/employeRoute')
 
 const { errorHandler } = require ('./middlewares/errorHandler')
 
@@ -14,6 +15,8 @@ require('./Config/dbConfig')
 
 // Routers
 app.use('/api/auth', authRoute)
+app.use('/employe', userRoute)
+
 app.use(errorHandler)
 
 

@@ -11,14 +11,15 @@ const register = async(req, res) => {
     const {username, email, password, confirm_password} = req.body
         if (!username || !email || !password) throw Error ('Please fill all fields')
         if (password != confirm_password) throw Error ('you have to be the password and confirm password the same thing')
-        const emailExist = await User.findOne({email})
+        const emailExist = await User.findOne({email: email})
         if(emailExist) throw Error ('Email already exist')
         const hashPassword = await bcrypt.hash(password, 10)
-
+        const managerRole = await Role.findOne({name: "admin"})
             const user = await User.create({
                 username,
                 email,
                 password: hashPassword,
+                roles: managerRole._id,
             })
             if(user){
                 mailer.main('register', user)
@@ -33,8 +34,7 @@ const register = async(req, res) => {
         if(!email || !password) throw Error ('Please fill all fields')
         const login_user = await User.findOne({email})
         if(!login_user || !(await bcrypt.compare(password, login_user.password))) throw Error ('Your email or password is incorrect')
-        if(!login_user.verification) throw Error ('Check your email to activate your account')
-        if(!login_user.status) throw Error ('You can\'t login')
+        const role = await Role.findById({_id: login_user.roles})
         const token = await jwt.sign({_id: login_user.id}, process.env.TOKEN_KEY)
         storage ('token', token)
         res.json({message: 'Login success', email: login_user.email, token: storage('token')})
