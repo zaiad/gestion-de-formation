@@ -1,5 +1,5 @@
 const db = require('../../models')
-const { findById } = require('../../models/users')
+const { findById } = require('../../models/employe')
 
 const Employe = db.user
 const Role = db.role

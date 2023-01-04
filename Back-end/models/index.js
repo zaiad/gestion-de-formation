@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise
 const db = {}
 db.mongoose = mongoose
 
-db.user = require('./users')
+db.user = require('./employe')
 db.role = require('./role')
 db.organisme = require('./organisme')
 db.formation = require('./formation')
