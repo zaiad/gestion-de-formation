@@ -3,8 +3,10 @@ require('dotenv').config()
 const authRoute = require('./Routers/authRoute')
 const userRoute = require('./Routers/userRoutes/employeRoute')
 const organismRoute = require('./Routers/userRoutes/organismeRoute')
+const formationRoute = require('./Routers/userRoutes/formationRoute')
 
 const { errorHandler } = require ('./middlewares/errorHandler')
+const { formation } = require('./models')
 
 const app = express()
 
@@ -18,6 +20,7 @@ require('./Config/dbConfig')
 app.use('/api/auth', authRoute)
 app.use('/employe', userRoute)
 app.use('/organisme', organismRoute)
+app.use('/formation', formationRoute)
 
 app.use(errorHandler)
 

@@ -37,7 +37,6 @@ const updateEmploye = async(req, res) => {
     const secondEmploye = await Employe.findOne({username, email})
     if(secondEmploye) res.send(`this ${email} already exist`)
     const updateEmploye = await Employe.findByIdAndUpdate({_id: id}, {username: username, email: email})
-    console.log(updateEmploye)
     res.json({message: 'is updated on your compte'})
 }
 

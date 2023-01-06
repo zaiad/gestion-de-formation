@@ -5,7 +5,9 @@ const formationSchema = mongoose.Schema({
         type: String,
     },
     image: {
-        type: String,
+        type: Array,
+        require: true,
+        trim: true
     },
     date_debut: {
         type: String,
