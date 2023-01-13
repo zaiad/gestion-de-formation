@@ -13,6 +13,10 @@ const organismeSchema = mongoose.Schema({
     phone : {
         type: String
     },
+    status: {
+        type: Boolean,
+        default: true
+    }
 })
 
 module.exports = mongoose.model('Organisme', organismeSchema)

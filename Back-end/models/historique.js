@@ -7,14 +7,6 @@ const historiqueSchema = mongoose.Schema({
             ref: "User"
         }
     ],
-
-    organisme: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Organisme"
-        }
-    ],
-
     formation: [
         {
             type: mongoose.Schema.Types.ObjectId,

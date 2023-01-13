@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const Schema = mongoose.Schema
 // mongoose.set('strictQuery', false);
 
 const User = mongoose.model(
@@ -14,19 +14,17 @@ const User = mongoose.model(
                 ref: "Role"
             }
         ],
-        organisme: [
+        organisme_id: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Organisme"
+                type: Schema.Types.ObjectId,
+                ref: "Organisme",
+                required: true,
             }
         ],
-        formation: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Formation"
-            }
-        ]
-
+        status: {
+            type: Boolean,
+            default: true
+        }
     })
 )
 

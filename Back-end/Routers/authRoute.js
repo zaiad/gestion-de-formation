@@ -1,11 +1,10 @@
 const router = require('express').Router()
 const authController = require('../controllers/authControllers/authController')
 const tryCatch = require('../middlewares/tryCatch')
+const { userPermission, authPermission} = require('../middlewares/permission')
 
 
-router.post('/register', tryCatch(authController.register))
-router.post('/login', tryCatch(authController.login))
-router.get('/verify-email/:token', tryCatch(authController.verfyEmail))
+router.post('/login',authPermission, tryCatch(authController.login))
 router.get('/logout', tryCatch(authController.logout))
 
 

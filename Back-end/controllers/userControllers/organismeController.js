@@ -20,7 +20,6 @@ const addOrganisme = async(req, res) => {
         })
         res.send('organisme is created')
     }
-
 }
 
 const updateOrganism = async(req, res) => {
@@ -29,13 +28,20 @@ const updateOrganism = async(req, res) => {
     if(!name || !ville || !address || !phone) throw Error('fill all fields')
     const find_organisme = await Organisme.findById(id)
     if(!find_organisme) res.send('This organisme is not found')
-    // console.log(find_organisme)
     const second_organisme = await Organisme.findOne({phone:phone})
     if(second_organisme) throw Error(`This number ${phone} already exist`)
-    console.log(second_organisme)
-    res.json({second_organisme})
     const update_organisme = await Organisme.findByIdAndUpdate({_id: id}, {name: name, ville: ville, address, phone})
-    res.json({update_organisme})
+    res.json({message: 'Organisme updated'})
+}
+
+const deleteOrganisme = async(req, res) =>  {
+    const id = req.params.id
+    const findEmploye = await Organisme.findById(id)
+    if(!findEmploye) {
+        res.send('not found the employe')
+    }
+        await Organisme.findByIdAndDelete({_id: id})
+        res.send('deleted successfully')
 }
 
 
@@ -44,5 +50,6 @@ const updateOrganism = async(req, res) => {
 module.exports = {
     getOrganisme,
     addOrganisme,
-    updateOrganism
+    updateOrganism,
+    deleteOrganisme,
 }
