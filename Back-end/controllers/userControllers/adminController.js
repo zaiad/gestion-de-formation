@@ -12,7 +12,7 @@ const Organisme = db.organisme
 
 const addEmploye = async(req, res) => {
     const {username, email, password, organisme} = req.body
-    if(!username || !email || !password || !organisme) throw Error('Please Fill All The Fields')
+    if(!username || !email  || !organisme) throw Error('Please Fill All The Fields')
     const organismes = await Organisme.findOne({name: organisme})
     if(organismes){
         // const organisme_id= organismes.id.toString()
@@ -37,9 +37,10 @@ const addEmploye = async(req, res) => {
 
 const getDataUser = async(req, res) => {
     const employeRole = await Role.findOne({name: "employe"})
+    const organisme = await Organisme.find()
     const employe = await User.find({roles: employeRole})
     .populate('organisme_id')
-    res.json({employe})
+    res.json({employe, organisme})
 }
 
 const deleteEmploye = async(req, res) => {

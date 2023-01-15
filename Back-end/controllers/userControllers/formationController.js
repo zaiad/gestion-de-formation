@@ -6,19 +6,19 @@ const Formation = db.formation
 
 const addFormation = async(req, res) => {
     const {name, date_debut, date_fin, description} = req.body
-    if(!name || !date_debut || !date_fin || !description) res.send('fill all fields')
-    const addDataFormation = {
-        name: name,
-        date_debut: date_debut,
-        date_fin: date_fin,
-        description: description,
-        image: req.file.filename
-    }
-    await Formation.create(addDataFormation)
-    try {
-        res.send('created')
-    } catch (error) {
-        throw Error ({message: 'error'})
+    let image = ''
+    if(!name || !date_debut || !date_fin || !description || !req.file) res.json('fill all fields')
+    else{
+        if(req.file) image = req.file.filename
+        const addDataFormation = {
+            name: name,
+            date_debut: date_debut,
+            date_fin: date_fin,
+            description: description,
+            image: image
+        }
+        const add_formation = await Formation.create(addDataFormation)
+        res.json({message: 'created'})
     }
 }
 
@@ -29,8 +29,6 @@ const getformation = async (req, res) => {
 
 const updateFormation = async (req, res) => {
     const {name, date_debut, date_fin, description} = req.body
-    const {body} = req
-    // console.log(req.body)
     const { id } = req.params 
     if(!name || !date_debut || !date_fin || !description) res.send('Please Fill All The Fields')
     else{
@@ -39,7 +37,6 @@ const updateFormation = async (req, res) => {
             description: description,
             date_debut: date_debut,
             date_fin: date_fin,
-            images: req.file.filename
         }
         if(updateFormation){
             await Formation.findByIdAndUpdate({_id: id}, updateFormation)
@@ -53,9 +50,20 @@ const updateFormation = async (req, res) => {
     }
 }
 
+const deleteFormation = async(req, res) =>  {
+    const id = req.params.id
+    const find_formation = await Formation.findById(id)
+    if(!find_formation) throw Error('Erroe, Formation not found')
+    if(find_formation.status) await Formation.findByIdAndUpdate(id, { status: false})
+    if(find_formation.status) res.json({message: 'delete successfully'})
+    if(!find_formation.status) await Formation.findByIdAndUpdate(id, { status: true})
+    if(!find_formation.status) res.json({message: 'reset successfully'})
+}
+
 
 module.exports = {
     addFormation,
     getformation,
     updateFormation,
+    deleteFormation,
 }

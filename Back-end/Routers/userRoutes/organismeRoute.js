@@ -4,10 +4,10 @@ const tryCatch = require('../../middlewares/tryCatch')
 const {userPermission} = require('../../middlewares/permission')
 
 
-router.get('/organisme',userPermission, tryCatch(organismController.getOrganisme))
-router.post('/add-organisme',userPermission, tryCatch(organismController.addOrganisme))
-router.put('/update-organisme/:id',userPermission, tryCatch(organismController.updateOrganism))
-router.delete('/delete-organisme/:id',userPermission, tryCatch(organismController.deleteOrganisme))
+router.get('/organisme', tryCatch(organismController.getOrganisme))
+router.post('/add-organisme', tryCatch(organismController.addOrganisme))
+router.put('/update-organisme/:id', tryCatch(organismController.updateOrganism))
+router.delete('/delete-organisme/:id', tryCatch(organismController.deleteOrganisme))
 
 
 module.exports = router

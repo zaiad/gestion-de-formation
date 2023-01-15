@@ -7,32 +7,39 @@ import Sidebar from '../Sidebar/Sidebar'
 // import Generator from "../../helpes/Generator"
 import { ToastContainer } from "react-toastify"
 
-function Employees() {
+function Employe() {
 
     const [employe, setEmploye] = useState([])
+    const [organisme, setOrganisme] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [updatModal, setUpdatModal] = useState(false);
-    // const [name, setName] = useState({name: ""})
+    const [add_employe, setAddEmploye] = useState({username: "", email: "", organisme: ""})
     // const [updatName, setUpdatName] = useState({name: ""})
 
-    // useEffect(()=> {
-    //     getCategory()
-    // }, [])
-    // const getCategory = async () => {
-    //     const categorie = await axios.get('http://localhost:2000/manager/categorie')
-    //     setCategory(categorie.data.categorie)
-    // }
+    useEffect(()=> {
+        getEmploye()
+    }, [])
+    const getEmploye = async () => {
+        const employes = await axios.get('http://localhost:4000/admin/employe')
+        setEmploye(employes.data.employe)
+        // setOrganisme(employes.data.organisme)
+        console.log(employes.data) 
 
-    // const postData = async (e) => {
-    //     e.preventDefault()
-    //     const add_categorie = await axios.post('http://localhost:2000/manager/add-categorie',{name})
-    //     if (add_categorie.data.message) {
-    //         Generator("success", add_categorie.data.message)
-    //         setShowModal(false)
-    //         setTimeout(() => { window.location.reload(false) }, "1000")
-    //     }
-    //     else Generator("error", add_categorie.data)
-    // }
+
+    }
+
+    const onChange = (e) => {
+        e.preventDefault()
+        const value = e.target.value
+        setAddEmploye({...add_employe, [e.target.name]: value})
+
+    }
+
+    const addEmploye = async (e) => {
+        e.preventDefault()
+        const add_emp = await axios.post('http://localhost:4000/admin/add-employe', add_employe)
+        // console.log(add_emp.data)
+    }
 
 
     
@@ -77,27 +84,30 @@ function Employees() {
                                 <tr>
                                     <th scope="col" className="px-6 py-3">Full Name</th>
                                     <th scope="col" className="px-6 py-3">Email</th>
+                                    <th scope="col" className="px-6 py-3">Organisme</th>
                                     <th scope="col" className="px-6 py-3"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {employe.map((data, i) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={i}>
-                                        <td className="w-4 p-4">{data.name}</td>
-                                        <td className={`w-4 p-4 text-gray-500  ${!(data.status) ? 'hidden' : ''}`}>
+                                {employe.map((data) => (
+                                    <tr className="bg-white border-b hover:bg-gray-50">
+                                        <td className="w-4 p-4">{data.username}</td>
+                                        <td className="w-4 p-4">{data.email}</td>
+                                        <td className="w-4 p-4">{data.nam}</td>
+                                        <td className={`w-4 p-4 text-gray-500 ${!(data.status) ? 'hidden' : ''}`}>
                                             <div className='flex justify-evenly'>
                                                 <button type='button'
-                                                //  onClick={() => {setUpdatName(data);setUpdatModal(true)}} 
-                                                 className='text-xl hover:text-amber-500'><AiOutlineEdit /></button>
-                                                <button type='button'
-                                                //  onClick={(e) => {e.preventDefault(); onDelete(data._id)}} 
-                                                 className='text-xl hover:text-amber-500'><AiOutlineDelete /></button>
+                                                // onClick={()=>{setUpdateOrganisme(data);setShowModalEdit(true)}}
+                                                    className='text-xl hover:text-amber-500'><AiOutlineEdit /></button>
+                                                <button type='button' 
+                                                // onClick={(e) => {e.preventDefault(); onDelete(data._id)}}
+                                                    className='text-xl hover:text-amber-500'><AiOutlineDelete /></button>
                                             </div>
                                         </td>
                                         <td className={`w-4 p-4 text-gray-500 ${(data.status) ? 'hidden' : ''}`}>
                                             <div className='flex justify-evenly'>
                                                 <button type='button'
-                                                //  onClick={(e) => {e.preventDefault();  onDelete(data._id)}}
+                                                //  onClick={(e) => {e.preventDefault();  onDelete(data._id)}} 
                                                     className='text-xl hover:text-amber-500'><BiReset /></button>
                                             </div>
                                         </td>
@@ -125,15 +135,31 @@ function Employees() {
                                     <form className="text-lg leading-relaxed text-slate-500">
                                         <div className="flex flex-col">
                                             <div className='mt-2'>
-                                                <label htmlFor="categorie" className='block mb-1 text-sm font-medium text-gray-900'>Categorie</label>
-                                                <input type="text" name="categorie" id="categorie" placeholder="Categorie"
-                                                // onChange={(e) => setName (e.target.value)}
+                                                <label htmlFor="username" className='block mb-1 text-sm font-medium text-gray-900'>Name</label>
+                                                <input type="text" name="username" id="username" placeholder="User Name"
+                                                onChange={onChange}
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                                            </div>
+                                            <div className='mt-2'>
+                                                <label htmlFor="email" className='block mb-1 text-sm font-medium text-gray-900'>Email</label>
+                                                <input type="email" name="email" id="email" placeholder="email"
+                                                // onChange={(e) => setName (e.target.value)}
+                                                onChange={onChange}
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                                            </div>
+                                            <div className='mt-2'>
+                                                <label htmlFor="organisme" className='block mb-1 text-sm font-medium text-gray-900'>Organisme</label>
+                                                <select onChange={onChange} name="organisme" id="organisme" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                                                    <option value=''>Select Organisme</option>
+                                                    {organisme.map((c) => (
+                                                        <option value={c.name}>{c.name}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-center p-4 border-t border-solid rounded-b border-slate-200">
                                             <button
-                                                // onClick={postData}
+                                                onClick={addEmploye}
                                                 className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500" type="submit">Add Category
                                             </button>
                                         </div>
@@ -186,4 +212,4 @@ function Employees() {
     )
 }
 
-export default Employees
+export default Employe

@@ -12,9 +12,9 @@ function Sidebar() {
     const menus = [
         { name: "Home", link: "/", icon: BiHomeAlt },
         { name: "Statistique", link: "/statistique", icon: TfiStatsUp },
-        { name: "Employees", link: "/Employees", icon: BiUserCircle },
-        { name: "Organismes", link: "/Organismes", icon: MdOutlineNoMeals },
-        { name: "Formations", link: "/Formations", icon: MdOutlineCategory },
+        { name: "Employees", link: "/Employe", icon: BiUserCircle },
+        { name: "Organismes", link: "/Organisme", icon: MdOutlineNoMeals },
+        { name: "Formations", link: "/Formation", icon: MdOutlineCategory },
     ]
     
     const [open, setOpen] = useState(true);

@@ -36,12 +36,12 @@ const updateOrganism = async(req, res) => {
 
 const deleteOrganisme = async(req, res) =>  {
     const id = req.params.id
-    const findEmploye = await Organisme.findById(id)
-    if(!findEmploye) {
-        res.send('not found the employe')
-    }
-        await Organisme.findByIdAndDelete({_id: id})
-        res.send('deleted successfully')
+    const findOrganisme = await Organisme.findById(id)
+    if(!findOrganisme) throw Error('Erroe, Organisme not found')
+    if(findOrganisme.status) await Organisme.findByIdAndUpdate(id, { status: false})
+    if(findOrganisme.status) res.json({message: 'delete successfully'})
+    if(!findOrganisme.status) await Organisme.findByIdAndUpdate(id, { status: true})
+    if(!findOrganisme.status) res.json({message: 'reset successfully'})
 }
 
 

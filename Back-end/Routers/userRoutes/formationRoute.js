@@ -7,6 +7,7 @@ const tryCatch = require('../../middlewares/tryCatch')
 router.post('/add-formation', upload.single('image') ,tryCatch(organismController.addFormation))
 router.get('/', tryCatch(organismController.getformation))
 router.put('/update-formation/:id', tryCatch(organismController.updateFormation))
+router.delete('/delete-formation/:id', tryCatch(organismController.deleteFormation))
 
 
 
