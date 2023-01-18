@@ -11,19 +11,19 @@ const Formation = db.formation
 const Organisme = db.organisme
 
 const addEmploye = async(req, res) => {
-    const {username, email, password, organisme} = req.body
+    const {username, email, organisme} = req.body
     if(!username || !email  || !organisme) throw Error('Please Fill All The Fields')
     const organismes = await Organisme.findOne({name: organisme})
     if(organismes){
         // const organisme_id= organismes.id.toString()
         const emailExist = await User.findOne({email})
         if (emailExist) throw Error(`${email} already Exists`)
-        const hash_password = await bcrypt.hash(password, 10)
+        // const hash_password = await bcrypt.hash(password, 10)
         const employeRole = await Role.findOne({name: "employe"})
         const addDataEmploye = {
             username: username,
             email: email,
-            password: hash_password,
+            // password: hash_password,
             roles: employeRole._id,
             organisme_id: organismes._id
         }
@@ -31,7 +31,7 @@ const addEmploye = async(req, res) => {
         if(addEmploye) res.send('Employe is Created')
         else throw Error('Employe not created')
     }else{
-        throw Error('aucune organisation avec ce nom')
+        throw Error('no organization with this name')
     }
 }
 
@@ -52,10 +52,18 @@ const deleteEmploye = async(req, res) => {
         await User.findByIdAndDelete({_id: id})
         res.send('deleted successfully')
 }
+const Statistique = async (req, res) => {
+    const organisme = await Organisme.count()
+    const formation = await Formation.count()
+    const user = await User.count()
+
+    res.json({user, organisme, formation})
+}
 
 
 module.exports = {
     addEmploye,
     getDataUser,
-    deleteEmploye
+    deleteEmploye,
+    Statistique
 }

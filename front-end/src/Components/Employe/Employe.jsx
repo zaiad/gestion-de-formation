@@ -6,64 +6,44 @@ import { BiReset } from "react-icons/bi"
 import Sidebar from '../Sidebar/Sidebar'
 // import Generator from "../../helpes/Generator"
 import { ToastContainer } from "react-toastify"
+import { useNavigate } from 'react-router-dom'
 
 function Employe() {
-
+    const navigate = useNavigate()
     const [employe, setEmploye] = useState([])
     const [organisme, setOrganisme] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [updatModal, setUpdatModal] = useState(false);
     const [add_employe, setAddEmploye] = useState({username: "", email: "", organisme: ""})
-    // const [updatName, setUpdatName] = useState({name: ""})
 
     useEffect(()=> {
+        const userData = JSON.parse(localStorage.getItem('login'))
+        if(!userData){
+            navigate('/Login')
+        }
         getEmploye()
     }, [])
     const getEmploye = async () => {
         const employes = await axios.get('http://localhost:4000/admin/employe')
         setEmploye(employes.data.employe)
-        // setOrganisme(employes.data.organisme)
-        console.log(employes.data) 
-
-
+        setOrganisme(employes.data.organisme)
     }
 
     const onChange = (e) => {
         e.preventDefault()
         const value = e.target.value
         setAddEmploye({...add_employe, [e.target.name]: value})
-
     }
 
-    const addEmploye = async (e) => {
+    const addEmploye = async(e) => {
         e.preventDefault()
-        const add_emp = await axios.post('http://localhost:4000/admin/add-employe', add_employe)
-        // console.log(add_emp.data)
+        const employeAdd = await axios.post('http://localhost:4000/admin/add-employe', add_employe)
+            if(!employeAdd.data.message){
+                alert(employeAdd.data)
+            } else{
+                alert(employeAdd.data)
+            }
     }
-
-
-    
-    // const onDelete = async (id) => {
-    //     const delete_categorie = await axios.delete(`http://localhost:2000/manager/deleteCategorie/${id}`)
-    //     if (delete_categorie.data.message) {
-    //         Generator("success", delete_categorie.data.message)
-    //         setShowModal(false)
-    //         setTimeout(() => { window.location.reload(false) }, "1000")
-    //     }
-    //     else Generator("error", delete_categorie.data)
-    // }
-
-    // const updateCategorie = async (e) => {
-    //     e.preventDefault()
-    //     // console.log(updatName)
-    //     const update_categorie = await axios.put(`http://localhost:2000/manager/updateCategorie/${updatName._id}`, updatName)
-    //     if (update_categorie.data.message) {
-    //         Generator("success", update_categorie.data.message)
-    //         setShowModal(false)
-    //         setTimeout(() => { window.location.reload(false) }, "1000")
-    //     }
-    //     else Generator("error", update_categorie.data)
-    // }
 
     return (
         <div className="flex w-screen">
@@ -93,7 +73,7 @@ function Employe() {
                                     <tr className="bg-white border-b hover:bg-gray-50">
                                         <td className="w-4 p-4">{data.username}</td>
                                         <td className="w-4 p-4">{data.email}</td>
-                                        <td className="w-4 p-4">{data.nam}</td>
+                                        <td className="w-4 p-4">{data.organisme_id[0].name}</td>
                                         <td className={`w-4 p-4 text-gray-500 ${!(data.status) ? 'hidden' : ''}`}>
                                             <div className='flex justify-evenly'>
                                                 <button type='button'
@@ -160,7 +140,7 @@ function Employe() {
                                         <div className="flex items-center justify-center p-4 border-t border-solid rounded-b border-slate-200">
                                             <button
                                                 onClick={addEmploye}
-                                                className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500" type="submit">Add Category
+                                                className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500" type="submit">Add Employe
                                             </button>
                                         </div>
                                     </form>
@@ -176,7 +156,7 @@ function Employe() {
                         <div className="relative w-auto max-w-3xl mx-auto my-6">
                             <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
                                 <div className="flex items-start justify-between p-5 border-b border-solid rounded-t border-slate-200 ">
-                                    <h3 className="text-3xl font-semibold">Update Category</h3>
+                                    <h3 className="text-3xl font-semibold">Update Employe</h3>
                                     <button className="float-right p-1 ml-8 text-3xl font-semibold leading-none text-gray-300 bg-transparent border-0 outline-none opacity-1 focus:outline-none" onClick={() => setShowModal(false)}>
                                         <button type='button'
                                         //  onClick={() => setUpdatModal(false)} 
@@ -187,17 +167,17 @@ function Employe() {
                                     <form className="text-lg leading-relaxed text-slate-500">
                                         <div className="flex flex-col">
                                             <div className='mt-2'>
-                                                <label htmlFor="categorie" className='block mb-1 text-sm font-medium text-gray-900'>Categorie</label>
+                                                <label htmlFor="employe" className='block mb-1 text-sm font-medium text-gray-900'>employe</label>
                                                 <input type="text"
                                                 //  value={updatName.name}
                                                 //   onChange={(e)=>setUpdatName({ ...updatName, [e.target.name]: e.target.value })}
-                                                    name="name" id="categorie" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
+                                                    name="name" id="employe" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" />
                                             </div>
                                         </div>
                                         <div className="flex items-center justify-center p-4 border-t border-solid rounded-b border-slate-200">
                                             <button
                                                 // onClick={updateCategorie}
-                                                className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500" type="submit">Update Category
+                                                className="flex px-4 py-1 font-bold text-white border-2 rounded-md bg-amber-500 hover:text-amber-500 hover:bg-white border-amber-500" type="submit">Update Employe
                                             </button>
                                         </div>
                                     </form>

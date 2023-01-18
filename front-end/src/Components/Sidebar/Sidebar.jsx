@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { MdOutlineDeliveryDining, MdOutlineNoMeals, MdOutlineCategory, MdOutlinePayment } from "react-icons/md";
 import {TfiStatsUp} from "react-icons/tfi"
 import { BiUserCircle, BiHomeAlt, BiLogOut } from "react-icons/bi";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { CgOrganisation } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 
@@ -13,15 +15,20 @@ function Sidebar() {
         { name: "Home", link: "/", icon: BiHomeAlt },
         { name: "Statistique", link: "/statistique", icon: TfiStatsUp },
         { name: "Employees", link: "/Employe", icon: BiUserCircle },
-        { name: "Organismes", link: "/Organisme", icon: MdOutlineNoMeals },
+        { name: "Organismes", link: "/Organisme", icon: CgOrganisation },
         { name: "Formations", link: "/Formation", icon: MdOutlineCategory },
     ]
     
     const [open, setOpen] = useState(true);
+    const navigate = useNavigate()
     
 
-    const logout = async () => {
-        
+    const logout = async() => {
+        axios.get('http://localhost:4000/api/auth/logout')
+        .then(e => {
+            localStorage.clear()
+            navigate ('/login')
+        })
     }
 
 return (

@@ -3,12 +3,14 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
-// import Generator from "../Generator"
+import privateRoute from "../PrivateRoutes"
 import { ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from '../Sidebar/Sidebar'
+import { useNavigate } from 'react-router-dom';
 
 function Organisme() {
+    const navigate = useNavigate()
     const [organismes, setOrganisme] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [showModalEdit, setShowModalEdit] = useState(false)
@@ -22,6 +24,10 @@ function Organisme() {
         setAddOrganisme({...add_organisme, [e.target.name]: value})
     }
     useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('login'))
+        if(!userData){
+            navigate('/Login')
+        }
         getData()
     },[])
 
@@ -34,10 +40,6 @@ function Organisme() {
         e.preventDefault()
         const organisme = await axios.post('http://localhost:4000/organisme/add-organisme', add_organisme)
             if (organisme.data.message) {
-            console.log( organisme.data.message)
-            // toast.success('Success Notification !', {
-            //     position: toast.POSITION.TOP_RIGHT
-            // });
             setShowModal(false)
             setTimeout(() => { window.location.reload(false) }, "1000")
         }

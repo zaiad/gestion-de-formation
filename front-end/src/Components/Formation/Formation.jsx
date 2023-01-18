@@ -7,8 +7,10 @@ import { BiReset } from "react-icons/bi";
 import { ToastContainer} from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from '../Sidebar/Sidebar'
+import { useNavigate } from 'react-router-dom';
 
 function Formation() {
+    const navigate  = useNavigate()
     const [formation, setFormation] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [showModalEdit, setShowModalEdit] = useState(false)
@@ -17,9 +19,14 @@ function Formation() {
 
     const urlImage = 'http://localhost:4000/images'
 
+
     useEffect(() => {
+        const userData = JSON.parse(localStorage.getItem('login'))
+        if(!userData){
+            navigate('/Login')
+        }
         getformation()
-    })
+    },[])
 
     const getformation = async() =>{
         const get_formation = await axios.get('http://localhost:4000/formation')

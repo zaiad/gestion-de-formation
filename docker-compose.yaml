@@ -1,0 +1,23 @@
+
+version: '3'
+services:
+  nodejs-front:
+    build:
+      context: ./Back-end
+    stdin_open: true
+    ports:
+      - "4000:4000"
+    container_name: node-back
+    volumes:
+        - ./api:/usr/src/app/Back-end
+        - /usr/src/app/Back-end/node_modules
+  react-app: 
+    build:
+      context: ./Front-end
+    ports:
+      - "3000:3000"
+    container_name: react-front
+    stdin_open: true
+    volumes:
+        - ./api:/usr/src/Front-end/api
+        - /usr/src/app/Front-end/node_modules

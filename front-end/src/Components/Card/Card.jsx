@@ -14,40 +14,41 @@ function Card() {
         }
     }, []);
     const getStatistique = async () => {
-        const get_statistique = await axios.get(`${process.env.REACT_APP_API_URL}/manager/`)
+        const get_statistique = await axios.get(`http://localhost:4000/admin/statistique`)
         setStatistique(get_statistique.data)
     }
 
     const card = [
-        { name: "user", number: statistique.user, icon: AiOutlineUser },
-        { name: "Organisme", number: statistique.command, icon: '' },
-        { name: "Employes", number: statistique.payement, icon: '' },
-        { name: "Formations", number: statistique.categorie, icon: '' },
+        // { name: "user", number: statistique.user, icon: AiOutlineUser },
+        { name: "organisme", number: statistique.organisme, icon: '' },
+        { name: "Employes", number: statistique.user, icon: '' },
+        { name: "Formations", number: statistique.formation, icon: '' },
     ];
 
     return (
         <div className="flex w-screen">
-        <Sidebar />
-        <main className="w-full h-screen">
-            <div className="flex flex-wrap px-5 mt-9">
-            {card?.map((card, i) => (
-                <div className="w-full max-w-full px-3 mt-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4" key={i}>
-                    <div className="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-                        <div className="flex-auto p-4">
-                            <div className="flex flex-row -mx-3">
-                                <div className="flex-none w-2/3 max-w-full px-3">
-                                    <div className='text-xl'>
-                                        <p className="mb-0 font-sans text-sm font-semibold leading-normal uppercase">{card.name} </p>
-                                        <p className="mb-2 font-bold text-amber-500">{card.number}</p>
+            <Sidebar />
+            <main className="w-full h-screen">
+                <div className="flex flex-wrap px-5 mt-9">
+                {card.map((card, i) => (
+                    <div className="w-full max-w-full px-3 mt-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4" key={i}>
+                        {console.log(statistique)}
+                        <div className="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                            <div className="flex-auto p-4">
+                                <div className="flex flex-row -mx-3">
+                                    <div className="flex-none w-2/3 max-w-full px-3">
+                                        <div className='text-xl'>
+                                            <p className="mb-0 font-sans text-sm font-semibold leading-normal uppercase">{card.name} </p>
+                                            <p className="mb-2 font-bold text-amber-500">{card.number}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                ))}
                 </div>
-            ))}
-            </div>
-        </main>
+            </main>
         </div>
     )
 }
